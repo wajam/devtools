@@ -1,0 +1,26 @@
+# Dev random stuff   #
+######################
+up_sandbox.sh
+
+# IDE generated files #
+######################
+.project
+.classpath
+.idea
+*.iml
+*.class
+*.sublime-project
+*.sublime-workspace
+sftp-config.json
+
+# OS generated files #
+######################
+.DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
+.*.tmp
+.*.swp
+.swp
+.buildpath
+.settings
