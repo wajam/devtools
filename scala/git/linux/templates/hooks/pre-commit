@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SCALARIFORM_PREFS='+placeScaladocAsterisksBeneathSecondAsterisk +multilineScaladocCommentsStartOnFirstLine'
+
 if `type scalariform.jar &> /dev/null`; then
-    git diff --cached --name-only | sed -n 's/^.*\.scala$/&/p' | xargs -I foo scalariform.jar foo
+    git diff --cached --name-only | sed -n 's/^.*\.scala$/&/p' | xargs -I foo scalariform.jar ${SCALARIFORM_PREFS} foo
 fi
