@@ -1,0 +1,5 @@
+this directory contains assorted [[http://git-scm.com/book/en/Customizing-Git-Git-Hooks][git hooks]] (and other paraphernalia) which can
+be used to automate and enforce some measure of regularity in the codebase. git
+is cross-platform tool and as such you could potentially have hooks which are
+platform agnostic. to not unnecessarily complicate matters, however, we've made
+platform specific directories (currently only linux).
