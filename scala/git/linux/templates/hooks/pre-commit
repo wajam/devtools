@@ -2,6 +2,17 @@
 
 SCALARIFORM_PREFS='+placeScaladocAsterisksBeneathSecondAsterisk +multilineScaladocCommentsStartOnFirstLine'
 
+FILESTOPROCESS=`git diff --cached --name-only`
+OUTPUT=""
+FILESCHANGEDCOUNT=0
+
 if `type scalariform.jar &> /dev/null`; then
-    git diff --cached --name-only | sed -n 's/^.*\.scala$/&/p' | xargs -I foo scalariform.jar ${SCALARIFORM_PREFS} foo
+    OUTPUT=`echo "$FILESTOPROCESS" | sed -n 's/^.*\.scala$/&/p' | xargs -I foo scalariform.jar ${SCALARIFORM_PREFS} foo`
+    FILESCHANGEDCOUNT=`echo "$OUTPUT" | sed -n '/^\[Reformatted\]/p' | wc -l`
+fi
+
+if [ ${FILESCHANGEDCOUNT} -gt 0 ]; then
+    exit 1
+else
+    exit 0
 fi
