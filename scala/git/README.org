@@ -3,3 +3,8 @@ be used to automate and enforce some measure of regularity in the codebase. git
 is cross-platform tool and as such you could potentially have hooks which are
 platform agnostic. to not unnecessarily complicate matters, however, we've made
 platform specific directories (currently only linux).
+
+Note that the pre-commit hook expects to find the "command line" version of
+Scalariform, which is available for download here:
+
+https://github.com/mdr/scalariform/wiki/Command-line-tool
