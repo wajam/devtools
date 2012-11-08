@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SCALARIFORM_PREFS='+placeScaladocAsterisksBeneathSecondAsterisk +multilineScaladocCommentsStartOnFirstLine'
+SCALARIFORM_PREFS=''
 
 FILESTOPROCESS=`git diff --cached --name-only`
 OUTPUT=""
