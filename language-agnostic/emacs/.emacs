@@ -8,15 +8,33 @@
 ties. in case it finds both in a file, it goes with the more common occurrence
 while enabling `whitespace-mode'."
   (interactive)
-  (let ((space-count 0)
-        (tab-count 0))
+  (let* ((matcher-prefix "\\(\\(\\sw\\|\\s(\\|\\s)\\|\\s_\\)+\\)\\(.*\\)$")
+         (space-matcher (concat "^\\( +\\)" matcher-prefix))
+         (tab-matcher (concat "^\\(\t+\\)" matcher-prefix))
+         (space-count 0)
+         (tab-count 0)
+         last-match-point)
     (save-excursion
+      ;; count space occurrence
       (goto-char (point-min))
-      (while (re-search-forward "^ +[^[:space:]\n]+$" nil t)
-        (setq space-count (1+ space-count)))
+      (while (setq last-match-point (re-search-forward space-matcher nil t))
+        (goto-char (match-beginning 3))
+        ;; only count towards spaces if the occurrence is in non-commented out
+        ;; portion. this helps avoid superfluous matches which are an artifact
+        ;; of top-level 'doc' style comments
+        (if (not (flyspell-generic-progmode-verify))
+            (setq space-count (1+ space-count)))
+        (goto-char last-match-point))
+
+      ;; count tab occurrence
       (goto-char (point-min))
-      (while (re-search-forward "^\t+[^[:space:]\n]+$" nil t)
-        (setq tab-count (1+ tab-count)))
+      (while (setq last-match-point (re-search-forward tab-matcher nil t))
+        (goto-char (match-beginning 3))
+        ;; unsure whether this if is needed, but just to be safe do the same
+        ;; thing for tabs as you did for spaces
+        (if (not (flyspell-generic-progmode-verify))
+            (setq tab-count (1+ tab-count)))
+        (goto-char last-match-point))
 
       (if (>= space-count tab-count)
           (setq indent-tabs-mode)
