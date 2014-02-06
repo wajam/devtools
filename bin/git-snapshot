@@ -1,0 +1,47 @@
+#!/bin/bash
+
+usage() {
+    cat <<EOF
+usage: git snapshot <environment>
+
+OPTIONS:
+-h        Show this message
+
+This command creates a properly annotated tag based on the <environment>
+argument passed in (as per <https://wajamtest.atlassian.net/browse/KNW-286>) and
+pushes it to the remote named 'origin'.
+
+ARGUMENTS:
+<environment>        prod|sandbox
+
+EOF
+}
+
+while getopts "h" OPTION; do
+    case ${OPTION} in
+        h)
+            usage
+            exit
+            ;;
+        *)
+            usage
+            exit 1
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+SNAPSHOTENV=${1}
+case ${SNAPSHOTENV} in
+    prod|sandbox)
+        ;;
+    *)
+        usage
+        exit 1
+        ;;
+esac
+
+SNAPSHOTNAME=${SNAPSHOTENV}/$(date +%F.%H-%M-%S)
+
+echo "Creating tag ${SNAPSHOTNAME}"
+git tag ${SNAPSHOTNAME} && git push origin --tags
